@@ -1,8 +1,35 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap');
+
+:root {
+    --bg-color: hsl(0 0% 13%);
+    --accent-color: hsl(40, 97%, 62%);
+    --dark-gray: hsl(0 0% 23%);
+    --medium-gray: hsl(0 0% 31%);
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body,
+html {
+    height: 100vh;
+}
+
 body {
-  padding: 50px;
-  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+    background: linear-gradient(to bottom, var(--bg-color), var(--dark-gray));
+    font-family: 'Inter', sans-serif;
+    color: white;
+    padding: 2em 3em;
+}
+
+ul {
+    list-style: none;
 }
 
 a {
-  color: #00B7FF;
+    text-decoration: none;
+}
 }
