@@ -23,6 +23,9 @@ body {
     font-family: 'Inter', sans-serif;
     color: white;
     padding: 2em 3em;
+    display: flex;
+    flex-direction: column;
+    gap: 4em;
 }
 
 ul {
@@ -31,5 +34,26 @@ ul {
 
 a {
     text-decoration: none;
+    color: var(--accent-color);
 }
+
+.logo {
+    display: flex;
+    flex-direction: column;
+    gap: 0.8rem;
+}
+.logo ul {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.logo h1 {
+    font-size: 48px;
+}
+
+.vertical-separator {
+    width: 1px;
+    background-color: white;
+}
+
 }
