@@ -56,4 +56,44 @@ a {
     background-color: white;
 }
 
+.home-content {
+    display: flex;
+    padding: 0.5rem;
+    gap: 1rem;
+}
+
+.home-link {
+    background-color: var(--dark-gray);
+    color: white;
+    padding: 1.5rem 2rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5em;
+    border-radius: 3px;
+    height: 100%;
+    position: relative;
+    z-index: 1;
+}
+
+.home-link:hover {
+    transition: color 0.5s ease;
+    color: black;
+}
+
+.home-link:hover::before {
+    width: 100%;
+    border-radius: 3px;
+}
+
+.home-link::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 3%;
+    height: 100%;
+    background-color: var(--accent-color);
+    border-radius: 3px 0 0 3px;
+    transition: width 0.5s ease;
+    z-index: -1;
 }
