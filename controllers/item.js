@@ -17,3 +17,15 @@ exports.index = asyncHandler(async (req, res, next) => {
         brand_count: numBrands
     });
 });
+
+exports.list = asyncHandler(async (req, res, next) => {
+    const items = await Item.find({}, 'name brand price')
+        .populate('brand')
+        .sort({ name: 1 })
+        .exec();
+    console.log(items);
+    res.render('item_list', {
+        title: 'All items',
+        items
+    });
+});

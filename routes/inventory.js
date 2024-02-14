@@ -5,4 +5,5 @@ const item = require('../controllers/item');
 
 router.get('/', item.index);
 
+router.get('/items', item.list);
 module.exports = router;
