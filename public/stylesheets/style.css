@@ -15,7 +15,7 @@
 
 body,
 html {
-    height: 100vh;
+    min-height: 100vh;
 }
 
 body {
@@ -96,4 +96,51 @@ a {
     border-radius: 3px 0 0 3px;
     transition: width 0.5s ease;
     z-index: -1;
+}
+
+.list-content {
+    padding: 0 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 3em;
+}
+
+.table {
+    padding: 0 1rem;
+}
+.row {
+    display: grid;
+    grid-template-columns: 6fr 1fr;
+    padding: 0 1em;
+    height: 60px;
+    align-items: center;
+}
+
+.row .fields {
+    display: flex;
+    gap: 4em;
+    align-items: center;
+}
+.fields > * {
+    flex: 1;
+}
+.table span {
+    font-weight: 700;
+}
+
+.actions {
+    text-align: right;
+    display: flex;
+    gap: 1.5rem;
+    justify-content: end;
+}
+
+.actions span {
+    color: white;
+}
+
+.icon-container {
+    display: block;
+    width: 16px;
+    height: 16px;
 }
