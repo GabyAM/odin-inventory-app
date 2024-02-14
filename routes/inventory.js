@@ -1,9 +1,15 @@
 const express = require('express');
 const router = express.Router();
 
-const item = require('../controllers/item');
+const itemController = require('../controllers/item');
+const categoryController = require('../controllers/category');
 
-router.get('/', item.index);
+router.get('/', itemController.index);
+
+router.get('/items', itemController.list);
+
+router.get('/categories', categoryController.list);
+
 
 router.get('/items', item.list);
 module.exports = router;
