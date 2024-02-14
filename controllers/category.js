@@ -4,8 +4,19 @@ const Category = require('../models/category');
 exports.list = asyncHandler(async (req, res, next) => {
     const categories = await Category.find({}, 'name').sort({ name: 1 }).exec();
 
-    res.render('category_list', {
+    const categoriesArray = categories.map((category) => {
+        return {
+            _id: category._id,
+            name: category.name,
+            description: category.description
+        };
+    });
+
+    console.log(categoriesArray);
+
+    res.render('list', {
         title: 'All categories',
-        categories
+        type: 'category',
+        array: categoriesArray
     });
 });

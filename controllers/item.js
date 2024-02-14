@@ -23,9 +23,33 @@ exports.list = asyncHandler(async (req, res, next) => {
         .populate('brand')
         .sort({ name: 1 })
         .exec();
-    console.log(items);
-    res.render('item_list', {
+
+    const itemsArray = items.map((item) => {
+        return {
+            _id: item._id,
+            name: item.name,
+            brand: {
+                name: item.brand.name
+            },
+            price: item.price
+        };
+    });
+
+    console.log(itemsArray);
+
+    res.render('list', {
         title: 'All items',
-        items
+        type: 'item',
+        array: itemsArray
+    });
+});
+
+exports.itemDetail = asyncHandler(async (req, res, next) => {
+    const item = await Item.findById(req.params.id)
+        .populate('brand category')
+        .exec();
+
+    res.render('item_detail', {
+        item
     });
 });
