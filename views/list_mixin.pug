@@ -36,3 +36,6 @@ mixin list(title, type, array)
                             span.icon-container
                                 +deleteIcon(20, 20)
                 hr
+        a.list-add-button(href=`/inventory/${type}/create`)
+            strong +
+            span Add #{type}

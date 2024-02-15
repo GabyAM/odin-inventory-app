@@ -1,0 +1,50 @@
+extends layout 
+
+block content 
+    include error_span_mixin
+    form(action="/inventory/item/create" method="POST")
+        h1 New item
+        fieldset 
+            div(class=(locals.errors && errors.name ? 'form-field-container error' : 'form-field-container'))
+                input.form-field(type="text" placeholder="Name" name="name" value=(item===undefined ? '' : item.name) required)
+            if locals.errors && errors.name
+                +errorSpan(errors.name)
+                //- span
+                //-     each error, index in errors.name 
+                //-         span.error=error 
+                //-         if index < errors.name.length - 1
+                //-             |,&nbsp; 
+            div(class=(locals.errors && errors.brand ? 'form-field-container error' : 'form-field-container'))
+                select.form-field(name="brand")
+                    option(disabled selected hidden value="" required) Brand
+                    for brand in brands
+                        if brand.selected 
+                            option(value=brand._id selected)=brand.name
+                        else 
+                            option(value=brand._id)=brand.name
+            if locals.errors && errors.brand
+                +errorSpan(errors.brand)
+            div(class=(locals.errors && errors.category ? 'form-field-container error' : 'form-field-container'))
+                select.form-field(required name="category")
+                    option(disabled selected hidden value="") Category
+                    for category in categories 
+                        if category.selected 
+                            option(value=category._id selected)=category.name
+                        else  
+                            option(value=category._id)=category.name
+            if locals.errors && errors.category
+                +errorSpan(errors.category)
+            div(class=(locals.errors && errors.description ? 'form-field-container error' : 'form-field-container'))
+                textarea.form-field(placeholder="Description" rows="4" name="description")= item===undefined ? '' : item.description 
+            if locals.errors && errors.description
+                +errorSpan(errors.description)
+            div(class=(locals.errors && errors.price ? 'form-field-container error' : 'form-field-container'))
+                input.form-field(type="number" placeholder="Price" name="price" value=(item===undefined ? '' : item.price))
+            if locals.errors && errors.price
+                +errorSpan(errors.price)
+            div(class=(locals.errors && errors['number-in-stock'] ? 'form-field-container error' : 'form-field-container'))
+                input.form-field(type="number" placeholder="Number in stock" required name="number-in-stock" value=(item===undefined ? '' : item.number_in_stock))
+            if locals.errors && errors['number-in-stock']
+                +errorSpan(errors['number-in-stock'])
+        button Add
+

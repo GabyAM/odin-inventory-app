@@ -1,0 +1,6 @@
+mixin errorSpan(errors)
+    span.error
+        each error, index in errors
+            span=error
+            if index < errors.length - 1
+                |,&nbsp; 

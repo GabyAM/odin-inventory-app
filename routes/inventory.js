@@ -9,6 +9,11 @@ router.get('/', itemController.index);
 
 router.get('/items', itemController.list);
 
+router
+    .route('/item/create')
+    .get(itemController.itemCreateGet)
+    .post(itemController.itemCreatePost);
+
 router.get('/item/:id', itemController.itemDetail);
 
 router.get('/categories', categoryController.list);

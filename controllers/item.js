@@ -3,6 +3,7 @@ const Category = require('../models/category');
 const Item = require('../models/item');
 const Brand = require('../models/brand');
 const mapItemList = require('../mappers/item');
+const { body, validationResult } = require('express-validator');
 
 exports.index = asyncHandler(async (req, res, next) => {
     const [numCategories, numItems, numBrands] = await Promise.all([
@@ -58,3 +59,81 @@ exports.itemDetail = asyncHandler(async (req, res, next) => {
         item: mappedItem
     });
 });
+
+exports.itemCreateGet = asyncHandler(async (req, res, next) => {
+    const [categories, brands] = await Promise.all([
+        Category.find({}, 'name').sort({ name: 1 }).exec(),
+        Brand.find({}, 'name').sort({ name: 1 }).exec()
+    ]);
+
+    res.render('item_form', {
+        categories,
+        brands
+    });
+});
+
+exports.itemCreatePost = [
+    body('name', 'name must not be empty').trim().notEmpty().escape(),
+    body('brand', 'brand must not be empty').trim().notEmpty().escape(),
+    body('category', 'category must not be empty').trim().notEmpty().escape(),
+    body('price')
+        .notEmpty()
+        .withMessage('Price must not be required')
+        .isNumeric()
+        .withMessage('Price must be numeric'),
+    body('number-in-stock')
+        .notEmpty()
+        .withMessage('Number in stock must not be required')
+        .isNumeric()
+        .withMessage('Number in stock must be numeric'),
+
+    asyncHandler(async (req, res, next) => {
+        const errors = validationResult(req);
+        const item = new Item({
+            name: req.body.name,
+            brand: req.body.brand,
+            category: req.body.category,
+            description: req.body.description,
+            price: req.body.price,
+            number_in_stock: req.body['number-in-stock']
+        });
+
+        console.log(item);
+
+        if (!errors.isEmpty()) {
+            const [categories, brands] = await Promise.all([
+                Category.find({}, 'name').sort({ name: 1 }).exec(),
+                Brand.find({}, 'name').sort({ name: 1 }).exec()
+            ]);
+
+            const selectedBrand = brands.find((brand) =>
+                brand._id.equals(item.brand)
+            );
+            selectedBrand.selected = 'true';
+            const selectedCategory = categories.find((category) =>
+                category._id.equals(item.category)
+            );
+            selectedCategory.selected = 'true';
+
+            const mappedErrors = {};
+            errors.array().forEach((error) => {
+                if (!mappedErrors[error.path]) {
+                    mappedErrors[error.path] = [error.msg];
+                } else {
+                    mappedErrors[error.path].push(error.msg);
+                }
+            });
+            console.log(mappedErrors);
+            res.render('item_form', {
+                categories,
+                brands,
+                errors: mappedErrors,
+                item
+            });
+        } else {
+            await item.save();
+            res.redirect('/inventory/items');
+        }
+    })
+];
+
