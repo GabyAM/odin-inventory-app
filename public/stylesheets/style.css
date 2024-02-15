@@ -151,6 +151,23 @@ a {
     height: 16px;
 }
 
+.list-add-button {
+    padding: 0 2em;
+    display: flex;
+    width: fit-content;
+    align-items: baseline;
+    gap: 1rem;
+}
+.list-add-button strong {
+    color: var(--accent-color);
+    font-weight: 900;
+    font-size: 36px;
+}
+.list-add-button span {
+    font-size: 24px;
+    color: white;
+}
+
 .detail-content {
     display: grid;
     grid-template-columns: 3fr 1fr;
