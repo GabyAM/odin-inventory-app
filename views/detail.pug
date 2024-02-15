@@ -1,0 +1,25 @@
+extends layout 
+
+block content 
+    include icons
+    div.detail-content
+        div.detail-fields-container
+            h2 #{title}: #{item._id}
+            div.detail-fields
+                each val, key in item
+                    if key !== '_id'
+                        if typeof(val) === 'object'
+                            span #[strong #{key}:] #[a(href=val.url)=val.name]       
+                        else
+                            span #[strong #{key}:] #{val}   
+        div.detail-buttons
+            a(href="#")
+                button
+                    span.icon-container 
+                        +editIcon(48, 48) 
+                    span Edit
+            a(href="#")
+                button
+                    span.icon-container 
+                        +deleteIcon(48, 48)
+                    span Delete

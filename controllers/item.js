@@ -2,6 +2,7 @@ const asyncHandler = require('express-async-handler');
 const Category = require('../models/category');
 const Item = require('../models/item');
 const Brand = require('../models/brand');
+const mapItemList = require('../mappers/item');
 
 exports.index = asyncHandler(async (req, res, next) => {
     const [numCategories, numItems, numBrands] = await Promise.all([
@@ -24,23 +25,10 @@ exports.list = asyncHandler(async (req, res, next) => {
         .sort({ name: 1 })
         .exec();
 
-    const itemsArray = items.map((item) => {
-        return {
-            _id: item._id,
-            name: item.name,
-            brand: {
-                name: item.brand.name
-            },
-            price: item.price
-        };
-    });
-
-    console.log(itemsArray);
-
     res.render('list', {
         title: 'All items',
         type: 'item',
-        array: itemsArray
+        array: mapItemList(items)
     });
 });
 
@@ -49,7 +37,24 @@ exports.itemDetail = asyncHandler(async (req, res, next) => {
         .populate('brand category')
         .exec();
 
-    res.render('item_detail', {
-        item
+    const mappedItem = {
+        _id: item._id,
+        Name: item.name,
+        Brand: {
+            name: item.brand.name,
+            url: item.brand.url
+        },
+        Category: {
+            name: item.category.name,
+            url: item.category.url
+        },
+        Description: item.description,
+        Price: item.price,
+        'In stock': item.number_in_stock
+    };
+
+    res.render('detail', {
+        title: 'Item',
+        item: mappedItem
     });
 });

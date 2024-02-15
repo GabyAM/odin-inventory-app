@@ -1,5 +1,7 @@
 const asyncHandler = require('express-async-handler');
 const Brand = require('../models/brand');
+const Item = require('../models/item');
+const mapItemList = require('../mappers/item');
 
 exports.list = asyncHandler(async (req, res, next) => {
     const brands = await Brand.find({}, 'name foundation_date')
@@ -18,5 +20,20 @@ exports.list = asyncHandler(async (req, res, next) => {
         title: 'All brands',
         type: 'brand',
         array: brandsArray
+    });
+});
+
+exports.brandDetail = asyncHandler(async (req, res, next) => {
+    const brand = await Brand.findById(req.params.id).exec();
+
+    const mappedBrand = {
+        _id: brand._id,
+        Name: brand.name,
+        'Foundation date': brand.foundation_date
+    };
+
+    res.render('detail', {
+        title: 'Brand',
+        item: mappedBrand,
     });
 });

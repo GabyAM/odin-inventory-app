@@ -9,8 +9,12 @@ router.get('/', itemController.index);
 
 router.get('/items', itemController.list);
 
+router.get('/item/:id', itemController.itemDetail);
+
 router.get('/categories', categoryController.list);
 
+router.get('/category/:id', categoryController.categoryDetail);
 
-router.get('/items', item.list);
+router.get('/brand/:id', brandController.categoryDetail);
+
 module.exports = router;
