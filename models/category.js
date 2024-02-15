@@ -2,7 +2,8 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const CategorySchema = new Schema({
-    name: String
+    name: { type: String, maxLength: 25, required: true },
+    description: { type: String, maxLength: 200 }
 });
 
 CategorySchema.virtual('url').get(function () {

@@ -3,7 +3,7 @@ const Schema = mongoose.Schema;
 const { DateTime } = require('luxon');
 
 const BrandSchema = new Schema({
-    name: String,
+    name: { type: String, maxLength: 50, required: true },
     foundation_date: Date
 });
 
