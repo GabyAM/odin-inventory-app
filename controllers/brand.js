@@ -24,7 +24,10 @@ exports.list = asyncHandler(async (req, res, next) => {
 });
 
 exports.brandDetail = asyncHandler(async (req, res, next) => {
-    const brand = await Brand.findById(req.params.id).exec();
+    const [brand, items] = await Promise.all([
+        Brand.findById(req.params.id).exec(),
+        Item.find({ brand: req.params.id }, 'name price').exec()
+    ]);
 
     const mappedBrand = {
         _id: brand._id,
@@ -35,5 +38,6 @@ exports.brandDetail = asyncHandler(async (req, res, next) => {
     res.render('detail', {
         title: 'Brand',
         item: mappedBrand,
+        list: items.length ? mapItemList(items) : items
     });
 });

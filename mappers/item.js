@@ -1,4 +1,13 @@
 module.exports = function mapItemList(items) {
+    if (!items[0].brand) {
+        return items.map((item) => {
+            return {
+                _id: item._id,
+                name: item.name,
+                price: item.price
+            };
+        });
+    }
     return items.map((item) => {
         return {
             _id: item._id,

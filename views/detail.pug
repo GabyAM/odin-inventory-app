@@ -23,3 +23,11 @@ block content
                     span.icon-container 
                         +deleteIcon(48, 48)
                     span Delete
+    if locals.list
+        if list.length > 0
+            include list_mixin
+            +list('All items', 'item', list)
+        else
+            h3 This #{title.toLowerCase()} has no items
+        
+

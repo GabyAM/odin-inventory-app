@@ -24,7 +24,12 @@ exports.list = asyncHandler(async (req, res, next) => {
 });
 
 exports.categoryDetail = asyncHandler(async (req, res, next) => {
-    const category = await Category.findById(req.params.id).exec();
+    const [category, items] = await Promise.all([
+        Category.findById(req.params.id).exec(),
+        Item.find({ category: req.params.id }, 'name brand price')
+            .populate('brand')
+            .exec()
+    ]);
 
     const mappedCategory = {
         _id: category._id,
@@ -35,5 +40,6 @@ exports.categoryDetail = asyncHandler(async (req, res, next) => {
     res.render('detail', {
         title: 'Category',
         item: mappedCategory,
+        list: items.length ? mapItemList(items) : items
     });
 });

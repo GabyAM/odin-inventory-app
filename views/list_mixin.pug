@@ -1,0 +1,38 @@
+mixin list(title, type, array)
+    include icons
+    div.list-content
+        h1=title
+        div.table
+            div.row
+                div.fields
+                    span Name
+                    if type === 'item'
+                        if typeof(array[0].brand) !== 'undefined'
+                            span Brand 
+                        span Price 
+                    else if type === 'category'
+                        span Description 
+                    else
+                        span Foundation date                       
+            each item in array 
+                div.row
+                    div.fields
+                        each val, key in item
+                            if key !== '_id'
+                                if (typeof(val) === 'object')
+                                    span #[a(href=val.url)=val.name]
+                                else if (typeof(val) === 'number')
+                                    span $#{val}
+                                else
+                                    span=val
+                    div.actions
+                        a(href=`/inventory/${type}/${item._id}`)
+                            span.icon-container
+                                +eyeIcon(20, 20)
+                        a(href="#")
+                            span.icon-container
+                                +editIcon(20, 20)
+                        a(href="#")
+                            span.icon-container
+                                +deleteIcon(20, 20)
+                hr
