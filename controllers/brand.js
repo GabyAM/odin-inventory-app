@@ -29,6 +29,12 @@ exports.brandDetail = asyncHandler(async (req, res, next) => {
         Item.find({ brand: req.params.id }, 'name price').exec()
     ]);
 
+    if (brand === null) {
+        const err = new Error('Brand not found');
+        err.status = 404;
+        return next(err);
+    }
+
     const mappedBrand = {
         _id: brand._id,
         Name: brand.name,

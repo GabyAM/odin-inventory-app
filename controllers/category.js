@@ -31,6 +31,12 @@ exports.categoryDetail = asyncHandler(async (req, res, next) => {
             .exec()
     ]);
 
+    if (category === null) {
+        const err = new Error('Category not found');
+        err.status = 404;
+        return next(err);
+    }
+
     const mappedCategory = {
         _id: category._id,
         Name: category.name,

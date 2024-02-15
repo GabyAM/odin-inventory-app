@@ -38,6 +38,12 @@ exports.itemDetail = asyncHandler(async (req, res, next) => {
         .populate('brand category')
         .exec();
 
+    if (item === null) {
+        const err = new Error('Item not found');
+        err.status = 404;
+        return next(err);
+    }
+
     const mappedItem = {
         _id: item._id,
         Name: item.name,
@@ -136,4 +142,3 @@ exports.itemCreatePost = [
         }
     })
 ];
-
