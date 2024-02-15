@@ -231,3 +231,75 @@ a {
 .detail-fields span {
     display: block;
 }
+
+form {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    max-width: 400px;
+    margin: 0 auto;
+    gap: 2em;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+
+form h1 {
+    font-size: 24px;
+}
+fieldset {
+    border: none;
+    display: flex;
+    flex-direction: column;
+}
+
+fieldset,
+.form-field-container,
+.form-field {
+    width: 100%;
+}
+.form-field-container {
+    border-bottom: 1px solid white;
+    padding: 1.3rem 1.5rem 0.6rem;
+}
+.form-field-container.error {
+    border-color: red;
+}
+span.error {
+    color: red;
+}
+.form-field {
+    background: none;
+    border: none;
+    color: white;
+    font-size: 16px;
+    padding: 0.2rem;
+}
+select.form-field {
+    margin-left: -3px;
+}
+
+textarea.form-field {
+    resize: none;
+}
+.form-field::placeholder {
+    color: white;
+    font-family: 'Inter';
+}
+.form-field:focus {
+    background-color: var(--accent-color);
+    outline: none;
+}
+.form-field:focus::placeholder {
+    color: black;
+}
+
+form button {
+    background-color: var(--medium-gray);
+    border: none;
+    color: var(--accent-color);
+    padding: 0.5em 1.5em;
+    max-width: 200px;
+    font-size: 32px;
+    font-weight: 700;
+}
