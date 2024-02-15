@@ -23,9 +23,14 @@ body {
     font-family: 'Inter', sans-serif;
     color: white;
     padding: 2em 3em;
+}
+
+.content {
     display: flex;
     flex-direction: column;
     gap: 4em;
+    max-width: 2000px;
+    margin: 0 auto;
 }
 
 ul {
@@ -48,6 +53,7 @@ a {
 }
 
 .logo h1 {
+    color: white;
     font-size: 48px;
 }
 

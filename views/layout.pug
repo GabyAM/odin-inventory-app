@@ -4,18 +4,19 @@ html
     title= title
     link(rel='stylesheet', href='/stylesheets/style.css')
   body
-    header
-      div.logo
-        h1 Inventory
-        ul 
-          li 
-            a(href="/inventory/categories") Categories
-          div.vertical-separator
-          li 
-            a(href="/inventory/items") Items
-          div.vertical-separator
-          li 
-            a(href="/inventory/brands") Brands
     div.content
+      header
+        div.logo
+          a(href="/")
+            h1 Inventory
+          ul 
+            li 
+              a(href="/inventory/categories") Categories
+            div.vertical-separator
+            li 
+              a(href="/inventory/items") Items
+            div.vertical-separator
+            li 
+              a(href="/inventory/brands") Brands
       block content
 
