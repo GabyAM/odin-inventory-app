@@ -114,3 +114,29 @@ exports.brandUpdatePost = [
         }
     })
 ];
+
+exports.brandDeleteGet = asyncHandler(async (req, res, next) => {
+    const brand = await Brand.findById(req.params.id);
+    res.render('delete', {
+        type: 'Brand',
+        item: brandMappers.mapBrandToDisplay(brand)
+    });
+});
+
+exports.brandDeletePost = asyncHandler(async (req, res, next) => {
+    const [brand, brandItems] = await Promise.all([
+        Brand.findById(req.params.id).exec(),
+        Item.find({ brand: req.params.id }).sort({ name: 1 }).exec()
+    ]);
+
+    if (brandItems.length > 0) {
+        res.render('delete', {
+            type: 'Brand',
+            item: brandMappers.mapBrandToDisplay(brand),
+            items: brandItems
+        });
+    } else {
+        await Brand.findByIdAndDelete(req.params.id);
+        res.redirect('/inventory/brands');
+    }
+});

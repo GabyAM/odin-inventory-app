@@ -57,6 +57,11 @@ router
     .get(brandController.brandUpdateGet)
     .post(brandController.brandUpdatePost);
 
+router
+    .route('/brand/:id/delete')
+    .get(brandController.brandDeleteGet)
+    .post(brandController.brandDeletePost);
+
 router.get('/brand/:id', brandController.brandDetail);
 
 module.exports = router;
