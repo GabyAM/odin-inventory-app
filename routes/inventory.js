@@ -38,6 +38,11 @@ router
     .get(categoryController.categoryUpdateGet)
     .post(categoryController.categoryUpdatePost);
 
+router
+    .route('/category/:id/delete')
+    .get(categoryController.categoryDeleteGet)
+    .post(categoryController.categoryDeletePost);
+
 router.get('/category/:id', categoryController.categoryDetail);
 
 router.get('/brands', brandController.list);

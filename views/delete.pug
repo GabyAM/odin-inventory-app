@@ -2,18 +2,28 @@ extends layout
 
 block content
     div.delete-warning-content
-        div.warning 
-            h1 Are you sure?
-            p You are about to delete #{type==='Item' ? `an` : 'a'} #{type.toLowerCase()}. This change cannot be undone.
+        
+        if !locals.items
+            div.warning 
+                h1 Are you sure?
+                p You are about to delete #{type==='Item' ? `an` : 'a'} #{type.toLowerCase()}. This change cannot be undone.
         div    
             include item_detail_mixin
             +itemDetail(type, item)
-            form(method="POST")
-                include icons
-                button
-                    span.icon-container 
-                        +deleteIcon(16,16)
-                    span Delete
+            if!locals.items
+                form(method="POST")
+                    include icons
+                    button
+                        span.icon-container 
+                            +deleteIcon(16,16)
+                        span Delete
+        if locals.items
+            div
+                span You need to delete the following items in order to delete this #{type.toLowerCase()}
+                ul 
+                    each item in items 
+                        a(href=item.url)
+                            li=item.name
 
 
 

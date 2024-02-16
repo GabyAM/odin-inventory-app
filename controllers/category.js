@@ -120,3 +120,29 @@ exports.categoryUpdatePost = [
         }
     })
 ];
+
+exports.categoryDeleteGet = asyncHandler(async (req, res, next) => {
+    const category = await Category.findById(req.params.id);
+    res.render('delete', {
+        type: 'Category',
+        item: categoryMappers.mapCategoryToDisplay(category)
+    });
+});
+
+exports.categoryDeletePost = asyncHandler(async (req, res, next) => {
+    const [category, categoryItems] = await Promise.all([
+        Category.findById(req.params.id).exec(),
+        Item.find({ category: req.params.id }).sort({ name: 1 }).exec()
+    ]);
+
+    if (categoryItems.length > 0) {
+        res.render('delete', {
+            type: 'Category',
+            item: categoryMappers.mapCategory(category),
+            items: categoryItems
+        });
+    } else {
+        await Category.findByIdAndDelete(req.params.id);
+        res.redirect('/inventory/categories');
+    }
+});
