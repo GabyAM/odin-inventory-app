@@ -1,0 +1,16 @@
+extends layout 
+
+block content 
+    include error_span_mixin
+    form(action="/inventory/category/create" method="POST")
+        h1 New category
+        fieldset 
+            div(class=(locals.errors && errors.name ? 'form-field-container error' : 'form-field-container'))
+                input.form-field(type="text" placeholder="Name" name="name" value=(category===undefined ? '' : category.name) required)
+            if locals.errors && errors.name
+                +errorSpan(errors.name)
+            div(class=(locals.errors && errors.description ? 'form-field-container error' : 'form-field-container'))
+                textarea.form-field(placeholder="Description" rows="4" name="description")= item===undefined ? '' : item.description 
+            if locals.errors && errors.description
+                +errorSpan(errors.description)
+        button Add

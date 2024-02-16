@@ -4,6 +4,7 @@ const Item = require('../models/item');
 const Brand = require('../models/brand');
 const mapItemList = require('../mappers/item');
 const { body, validationResult } = require('express-validator');
+const { mapErrors } = require('../mappers/error');
 
 exports.index = asyncHandler(async (req, res, next) => {
     const [numCategories, numItems, numBrands] = await Promise.all([
@@ -121,19 +122,10 @@ exports.itemCreatePost = [
             );
             selectedCategory.selected = 'true';
 
-            const mappedErrors = {};
-            errors.array().forEach((error) => {
-                if (!mappedErrors[error.path]) {
-                    mappedErrors[error.path] = [error.msg];
-                } else {
-                    mappedErrors[error.path].push(error.msg);
-                }
-            });
-            console.log(mappedErrors);
             res.render('item_form', {
                 categories,
                 brands,
-                errors: mappedErrors,
+                errors: mapErrors(errors),
                 item
             });
         } else {

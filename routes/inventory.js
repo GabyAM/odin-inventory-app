@@ -18,11 +18,15 @@ router.get('/item/:id', itemController.itemDetail);
 
 router.get('/categories', categoryController.list);
 
+router
+    .route('/category/create')
+    .get(categoryController.categoryCreateGet)
+    .post(categoryController.categoryCreatePost);
+
 router.get('/category/:id', categoryController.categoryDetail);
 
 router.get('/brands', brandController.list);
 
 router.get('/brand/:id', brandController.brandDetail);
-
 
 module.exports = router;

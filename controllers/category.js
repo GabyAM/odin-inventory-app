@@ -2,6 +2,8 @@ const asyncHandler = require('express-async-handler');
 const Category = require('../models/category');
 const Item = require('../models/item');
 const mapItemList = require('../mappers/item');
+const { body, validationResult } = require('express-validator');
+const { mapErrors } = require('../mappers/error');
 
 exports.list = asyncHandler(async (req, res, next) => {
     const categories = await Category.find({}, 'name').sort({ name: 1 }).exec();
@@ -49,3 +51,40 @@ exports.categoryDetail = asyncHandler(async (req, res, next) => {
         list: items.length ? mapItemList(items) : items
     });
 });
+
+exports.categoryCreateGet = (req, res, next) => {
+    res.render('category_form');
+};
+
+exports.categoryCreatePost = [
+    body('name', 'name must not be empty').trim().notEmpty().escape(),
+
+    asyncHandler(async (req, res, next) => {
+        const errors = validationResult(req);
+
+        const category = new Category({
+            name: req.body.name,
+            description: req.body.description
+        });
+
+        if (!errors.isEmpty()) {
+            res.render('category_form', {
+                category,
+                errors: mapErrors(errors)
+            });
+        } else {
+            const categoryExists = await Category.findOne({
+                name: req.body.name
+            })
+                .collation({ locale: 'en', strength: 2 })
+                .exec();
+
+            if (categoryExists) {
+                res.redirect(categoryExists.url);
+            } else {
+                await category.save();
+                res.redirect(category.url);
+            }
+        }
+    })
+];
