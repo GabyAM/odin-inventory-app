@@ -303,3 +303,40 @@ form button {
     font-size: 32px;
     font-weight: 700;
 }
+
+.delete-warning-content {
+    width: 100%;
+    max-width: 400px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: 3rem;
+}
+.delete-warning-content .warning {
+    text-align: center;
+}
+.warning p {
+    font-size: 20px;
+}
+.delete-warning-content > div {
+    display: flex;
+    flex-direction: column;
+    gap: 0.8rem;
+}
+
+.delete-warning-content h2 {
+    font-size: 16px;
+}
+.delete-warning-content .detail-fields p,
+.delete-warning-content .detail-fields span {
+    font-size: 12px;
+}
+
+.delete-warning-content button {
+    background-color: red;
+    color: white;
+    border-radius: 3px;
+    display: flex;
+    align-items: center;
+    font-size: 16px;
+}
