@@ -108,7 +108,7 @@ a {
     padding: 0 1rem;
     display: flex;
     flex-direction: column;
-    gap: 3em;
+    gap: 2em;
 }
 
 .table {
@@ -126,6 +126,8 @@ a {
     display: flex;
     gap: 4em;
     align-items: center;
+    overflow: hidden;
+    height: 100%;
 }
 .fields > * {
     flex: 1;
@@ -280,6 +282,7 @@ select.form-field {
 }
 
 textarea.form-field {
+    font-family: 'Inter';
     resize: none;
 }
 .form-field::placeholder {
