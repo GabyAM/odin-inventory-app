@@ -1,7 +1,8 @@
 const asyncHandler = require('express-async-handler');
 const Brand = require('../models/brand');
 const Item = require('../models/item');
-const mapItemList = require('../mappers/item');
+const itemMappers = require('../mappers/item');
+const brandMappers = require('../mappers/brand');
 const { body, validationResult } = require('express-validator');
 const mapErrors = require('../mappers/error');
 
@@ -10,17 +11,10 @@ exports.list = asyncHandler(async (req, res, next) => {
         .sort({ name: 1 })
         .exec();
 
-    const brandsArray = brands.map((brand) => ({
-        _id: brand.id,
-        url: brand.url,
-        name: brand.name,
-        foundation_date_formatted: brand.foundation_date_formatted
-    }));
-
     res.render('list', {
         title: 'All brands',
         type: 'brand',
-        array: brandsArray
+        array: brands.map((brand) => brandMappers.mapBrand(brand))
     });
 });
 
@@ -36,17 +30,12 @@ exports.brandDetail = asyncHandler(async (req, res, next) => {
         return next(err);
     }
 
-    const mappedBrand = {
-        _id: brand._id,
-        url: brand.url,
-        Name: brand.name,
-        'Foundation date': brand.foundation_date_formatted
-    };
-
     res.render('detail', {
         title: 'Brand',
-        item: mappedBrand,
-        list: items.length ? mapItemList(items) : items
+        item: brandMappers.mapBrandToDisplay(brand),
+        list: items.length
+            ? items.map((item) => itemMappers.mapItem(item))
+            : items
     });
 });
 

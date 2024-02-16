@@ -1,19 +1,17 @@
 const asyncHandler = require('express-async-handler');
 const Category = require('../models/category');
 const Item = require('../models/item');
-const mapItemList = require('../mappers/item');
+const categoryMappers = require('../mappers/category');
+const itemMappers = require('../mappers/item');
 const { body, validationResult } = require('express-validator');
 const { mapErrors } = require('../mappers/error');
 
 exports.list = asyncHandler(async (req, res, next) => {
     const categories = await Category.find({}).sort({ name: 1 }).exec();
 
-    const categoriesArray = categories.map((category) => ({
-        _id: category._id,
-        url: category.url,
-        name: category.name,
-        description: category.description
-    }));
+    const categoriesArray = categories.map((category) =>
+        categoryMappers.mapCategory(category)
+    );
 
     console.log(categoriesArray);
 
@@ -38,16 +36,12 @@ exports.categoryDetail = asyncHandler(async (req, res, next) => {
         return next(err);
     }
 
-    const mappedCategory = {
-        _id: category._id,
-        Name: category.name,
-        Description: category.description
-    };
-
     res.render('detail', {
         title: 'Category',
-        item: mappedCategory,
-        list: items.length ? mapItemList(items) : items
+        item: categoryMappers.mapCategoryToDisplay(category),
+        list: items.length
+            ? items.map((item) => itemMappers.mapItem(item))
+            : items
     });
 });
 

@@ -2,7 +2,7 @@ const asyncHandler = require('express-async-handler');
 const Category = require('../models/category');
 const Item = require('../models/item');
 const Brand = require('../models/brand');
-const mapItemList = require('../mappers/item');
+const itemMappers = require('../mappers/item');
 const { body, validationResult } = require('express-validator');
 const { mapErrors } = require('../mappers/error');
 
@@ -30,7 +30,7 @@ exports.list = asyncHandler(async (req, res, next) => {
     res.render('list', {
         title: 'All items',
         type: 'item',
-        array: mapItemList(items)
+        array: items.map((item) => itemMappers.mapItem(item))
     });
 });
 
@@ -45,26 +45,9 @@ exports.itemDetail = asyncHandler(async (req, res, next) => {
         return next(err);
     }
 
-    const mappedItem = {
-        _id: item._id,
-        url: item.url,
-        Name: item.name,
-        Brand: {
-            name: item.brand.name,
-            url: item.brand.url
-        },
-        Category: {
-            name: item.category.name,
-            url: item.category.url
-        },
-        Description: item.description,
-        Price: item.price,
-        'In stock': item.number_in_stock
-    };
-
     res.render('detail', {
         title: 'Item',
-        item: mappedItem
+        item: itemMappers.mapItemToDisplay(item)
     });
 });
 
