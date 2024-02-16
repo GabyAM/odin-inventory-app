@@ -4,17 +4,12 @@ const Item = require('../models/item');
 const mapItemList = require('../mappers/item');
 const { body, validationResult } = require('express-validator');
 const { mapErrors } = require('../mappers/error');
+const { mapCategory } = require('../mappers/category');
 
 exports.list = asyncHandler(async (req, res, next) => {
     const categories = await Category.find({}).sort({ name: 1 }).exec();
 
-    const categoriesArray = categories.map((category) => {
-        return {
-            _id: category._id,
-            name: category.name,
-            description: category.description
-        };
-    });
+    const categoriesArray = categories.map((category) => mapCategory(category));
 
     console.log(categoriesArray);
 
@@ -39,21 +34,17 @@ exports.categoryDetail = asyncHandler(async (req, res, next) => {
         return next(err);
     }
 
-    const mappedCategory = {
-        _id: category._id,
-        Name: category.name,
-        Description: category.description
-    };
-
     res.render('detail', {
         title: 'Category',
-        item: mappedCategory,
+        item: mapCategory(category),
         list: items.length ? mapItemList(items) : items
     });
 });
 
 exports.categoryCreateGet = (req, res, next) => {
-    res.render('category_form');
+    res.render('category_form', {
+        title: 'New category'
+    });
 };
 
 exports.categoryCreatePost = [
@@ -69,6 +60,7 @@ exports.categoryCreatePost = [
 
         if (!errors.isEmpty()) {
             res.render('category_form', {
+                title: 'New category',
                 category,
                 errors: mapErrors(errors)
             });
@@ -85,6 +77,42 @@ exports.categoryCreatePost = [
                 await category.save();
                 res.redirect(category.url);
             }
+        }
+    })
+];
+
+exports.categoryUpdateGet = asyncHandler(async (req, res, next) => {
+    const category = await Category.findById(req.params.id).exec();
+    res.render('category_form', {
+        title: 'Update category',
+        category
+    });
+});
+exports.categoryUpdatePost = [
+    body('name', 'name must not be empty').trim().notEmpty().escape(),
+
+    asyncHandler(async (req, res, next) => {
+        const errors = validationResult(req);
+
+        const category = new Category({
+            name: req.body.name,
+            description: req.body.description,
+            _id: req.params.id
+        });
+
+        if (!errors.isEmpty()) {
+            res.render('category_form', {
+                title: 'Update category',
+                category,
+                errors: mapErrors(errors)
+            });
+        } else {
+            const updatedCategory = await Category.findByIdAndUpdate(
+                req.params.id,
+                category,
+                {}
+            );
+            res.redirect(updatedCategory.url);
         }
     })
 ];

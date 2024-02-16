@@ -28,6 +28,11 @@ router
     .get(categoryController.categoryCreateGet)
     .post(categoryController.categoryCreatePost);
 
+router
+    .route('/category/:id/update')
+    .get(categoryController.categoryUpdateGet)
+    .post(categoryController.categoryUpdatePost);
+
 router.get('/category/:id', categoryController.categoryDetail);
 
 router.get('/brands', brandController.list);
