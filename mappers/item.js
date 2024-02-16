@@ -4,7 +4,8 @@ module.exports = function mapItemList(items) {
             return {
                 _id: item._id,
                 name: item.name,
-                price: item.price
+                price: item.price,
+                url: item.url
             };
         });
     }
@@ -16,7 +17,8 @@ module.exports = function mapItemList(items) {
                 name: item.brand.name,
                 url: item.brand.url
             },
-            price: item.price
+            price: item.price,
+            url: item.url
         };
     });
 };

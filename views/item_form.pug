@@ -2,7 +2,7 @@ extends layout
 
 block content 
     include error_span_mixin
-    form(action="/inventory/item/create" method="POST")
+    form(method="POST")
         h1 New item
         fieldset 
             div(class=(locals.errors && errors.name ? 'form-field-container error' : 'form-field-container'))

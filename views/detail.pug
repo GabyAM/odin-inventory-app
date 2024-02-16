@@ -7,13 +7,13 @@ block content
             h2 #{title}: #{item._id}
             div.detail-fields
                 each val, key in item
-                    if key !== '_id'
+                    if key !== '_id' && key !== 'url'
                         if typeof(val) === 'object'
                             span #[strong #{key}:] #[a(href=val.url)=val.name]       
                         else
                             span #[strong #{key}:] #{val}   
         div.detail-buttons
-            a(href="#")
+            a(href=`${item.url}/update`)
                 button
                     span.icon-container 
                         +editIcon(48, 48) 

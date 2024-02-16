@@ -47,6 +47,7 @@ exports.itemDetail = asyncHandler(async (req, res, next) => {
 
     const mappedItem = {
         _id: item._id,
+        url: item.url,
         Name: item.name,
         Brand: {
             name: item.brand.name,
@@ -131,6 +132,86 @@ exports.itemCreatePost = [
         } else {
             await item.save();
             res.redirect('/inventory/items');
+        }
+    })
+];
+
+exports.itemUpdateGet = asyncHandler(async (req, res, next) => {
+    const [item, brands, categories] = await Promise.all([
+        Item.findById(req.params.id).exec(),
+        Brand.find().sort({ name: 1 }).exec(),
+        Category.find().sort({ name: 1 }).exec()
+    ]);
+
+    const selectedBrand = brands.find((brand) => brand._id.equals(item.brand));
+    selectedBrand.selected = 'true';
+    const selectedCategory = categories.find((category) =>
+        category._id.equals(item.category)
+    );
+    selectedCategory.selected = 'true';
+
+    res.render('item_form', {
+        item,
+        brands,
+        categories
+    });
+});
+
+exports.itemUpdatePost = [
+    body('name', 'name must not be empty').trim().notEmpty().escape(),
+    body('brand', 'brand must not be empty').trim().notEmpty().escape(),
+    body('category', 'category must not be empty').trim().notEmpty().escape(),
+    body('price')
+        .notEmpty()
+        .withMessage('Price must not be required')
+        .isNumeric()
+        .withMessage('Price must be numeric'),
+    body('number-in-stock')
+        .notEmpty()
+        .withMessage('Number in stock must not be required')
+        .isNumeric()
+        .withMessage('Number in stock must be numeric'),
+
+    asyncHandler(async (req, res, next) => {
+        const errors = validationResult(req);
+        const item = new Item({
+            name: req.body.name,
+            brand: req.body.brand,
+            category: req.body.category,
+            description: req.body.description,
+            price: req.body.price,
+            number_in_stock: req.body['number-in-stock'],
+            _id: req.params.id
+        });
+
+        if (!errors.isEmpty()) {
+            const [categories, brands] = await Promise.all([
+                Category.find({}, 'name').sort({ name: 1 }).exec(),
+                Brand.find({}, 'name').sort({ name: 1 }).exec()
+            ]);
+
+            const selectedBrand = brands.find((brand) =>
+                brand._id.equals(item.brand)
+            );
+            selectedBrand.selected = 'true';
+            const selectedCategory = categories.find((category) =>
+                category._id.equals(item.category)
+            );
+            selectedCategory.selected = 'true';
+
+            res.render('item_form', {
+                categories,
+                brands,
+                errors: mapErrors(errors),
+                item
+            });
+        } else {
+            const updatedItem = await Item.findByIdAndUpdate(
+                req.params.id,
+                item,
+                {}
+            );
+            res.redirect(updatedItem.url);
         }
     })
 ];

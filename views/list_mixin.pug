@@ -18,7 +18,7 @@ mixin list(title, type, array)
                 div.row
                     div.fields
                         each val, key in item
-                            if key !== '_id'
+                            if key !== '_id' && key !== 'url'
                                 if (typeof(val) === 'object')
                                     span #[a(href=val.url)=val.name]
                                 else if (typeof(val) === 'number')
@@ -26,10 +26,10 @@ mixin list(title, type, array)
                                 else
                                     span=val
                     div.actions
-                        a(href=`/inventory/${type}/${item._id}`)
+                        a(href=item.url)
                             span.icon-container
                                 +eyeIcon(20, 20)
-                        a(href="#")
+                        a(href=`${item.url}/update`)
                             span.icon-container
                                 +editIcon(20, 20)
                         a(href="#")

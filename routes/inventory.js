@@ -14,6 +14,11 @@ router
     .get(itemController.itemCreateGet)
     .post(itemController.itemCreatePost);
 
+router
+    .route('/item/:id/update')
+    .get(itemController.itemUpdateGet)
+    .post(itemController.itemUpdatePost);
+
 router.get('/item/:id', itemController.itemDetail);
 
 router.get('/categories', categoryController.list);
