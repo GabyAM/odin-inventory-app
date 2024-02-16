@@ -1,4 +1,4 @@
-mixin list(title, type, array)
+mixin list(title, type, array, add_button_visible = true)
     include icons
     div.list-content
         h1=title
@@ -36,6 +36,7 @@ mixin list(title, type, array)
                             span.icon-container
                                 +deleteIcon(20, 20)
                 hr
-        a.list-add-button(href=`/inventory/${type}/create`)
-            strong +
-            span Add #{type}
+        if add_button_visible
+            a.list-add-button(href=`/inventory/${type}/create`)
+                strong +
+                span Add #{type}

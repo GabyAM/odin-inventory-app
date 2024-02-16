@@ -19,7 +19,7 @@ block content
     if locals.list
         if list.length > 0
             include list_mixin
-            +list('All items', 'item', list)
+            +list('All items', 'item', list, false)
         else
             h3 This #{title.toLowerCase()} has no items
         
