@@ -161,7 +161,7 @@ exports.categoryDeletePost = asyncHandler(async (req, res, next) => {
     if (categoryItems.length > 0) {
         res.render('delete', {
             type: 'Category',
-            item: categoryMappers.mapCategory(category),
+            item: categoryMappers.mapCategoryToDisplay(category),
             items: categoryItems
         });
     } else {
