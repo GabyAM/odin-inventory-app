@@ -105,12 +105,31 @@ exports.brandUpdatePost = [
                 errors: mapErrors(errors)
             });
         } else {
-            const updatedBrand = await Brand.findByIdAndUpdate(
-                req.params.id,
-                brand,
-                {}
-            );
-            res.redirect(updatedBrand.url);
+            const brandExists = await Brand.findOne({
+                name: req.body.name,
+                _id: { $ne: req.params.id }
+            })
+                .collation({ locale: 'en', strength: 2 })
+                .exec();
+
+            if (brandExists) {
+                res.render('brand_form', {
+                    title: 'Update brand',
+                    brand,
+                    errors: {
+                        name: [
+                            `The name '${req.body.name}' already exists in a brand`
+                        ]
+                    }
+                });
+            } else {
+                const updatedBrand = await Brand.findByIdAndUpdate(
+                    req.params.id,
+                    brand,
+                    {}
+                );
+                res.redirect(updatedBrand.url);
+            }
         }
     })
 ];

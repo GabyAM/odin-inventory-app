@@ -111,12 +111,31 @@ exports.categoryUpdatePost = [
                 errors: mapErrors(errors)
             });
         } else {
-            const updatedCategory = await Category.findByIdAndUpdate(
-                req.params.id,
-                category,
-                {}
-            );
-            res.redirect(updatedCategory.url);
+            const categoryExists = await Category.findOne({
+                name: req.body.name,
+                _id: { $ne: req.params.id }
+            })
+                .collation({ locale: 'en', strength: 2 })
+                .exec();
+
+            if (categoryExists) {
+                res.render('category_form', {
+                    title: 'Update category',
+                    category,
+                    errors: {
+                        name: [
+                            `The name '${req.body.name}' already exists in a category`
+                        ]
+                    }
+                });
+            } else {
+                const updatedCategory = await Category.findByIdAndUpdate(
+                    req.params.id,
+                    category,
+                    {}
+                );
+                res.redirect(updatedCategory.url);
+            }
         }
     })
 ];
