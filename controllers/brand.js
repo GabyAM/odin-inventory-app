@@ -40,7 +40,7 @@ exports.brandDetail = asyncHandler(async (req, res, next) => {
     const mappedBrand = {
         _id: brand._id,
         Name: brand.name,
-        'Foundation date': brand.foundation_date
+        'Foundation date': brand.foundation_date_formatted
     };
 
     res.render('detail', {

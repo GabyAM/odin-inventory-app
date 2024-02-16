@@ -6,7 +6,7 @@ const { body, validationResult } = require('express-validator');
 const { mapErrors } = require('../mappers/error');
 
 exports.list = asyncHandler(async (req, res, next) => {
-    const categories = await Category.find({}, 'name').sort({ name: 1 }).exec();
+    const categories = await Category.find({}).sort({ name: 1 }).exec();
 
     const categoriesArray = categories.map((category) => {
         return {
