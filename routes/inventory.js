@@ -19,6 +19,11 @@ router
     .get(itemController.itemUpdateGet)
     .post(itemController.itemUpdatePost);
 
+router
+    .route('/item/:id/delete')
+    .get(itemController.itemDeleteGet)
+    .post(itemController.itemDeletePost);
+
 router.get('/item/:id', itemController.itemDetail);
 
 router.get('/categories', categoryController.list);

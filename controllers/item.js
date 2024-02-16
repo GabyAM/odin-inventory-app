@@ -198,3 +198,19 @@ exports.itemUpdatePost = [
         }
     })
 ];
+
+exports.itemDeleteGet = asyncHandler(async (req, res, next) => {
+    const item = await Item.findById(req.params.id)
+        .populate('brand category')
+        .exec();
+    console.log(item);
+    res.render('delete', {
+        type: 'Item',
+        item: itemMappers.mapItemToDisplay(item)
+    });
+});
+
+exports.itemDeletePost = asyncHandler(async (req, res, next) => {
+    await Item.findByIdAndDelete(req.params.id);
+    res.redirect('/inventory/items');
+});

@@ -32,7 +32,7 @@ mixin list(title, type, array)
                         a(href=`${item.url}/update`)
                             span.icon-container
                                 +editIcon(20, 20)
-                        a(href="#")
+                        a(href=`${item.url}/delete`)
                             span.icon-container
                                 +deleteIcon(20, 20)
                 hr

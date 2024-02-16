@@ -2,23 +2,16 @@ extends layout
 
 block content 
     include icons
+    include item_detail_mixin
     div.detail-content
-        div.detail-fields-container
-            h2 #{title}: #{item._id}
-            div.detail-fields
-                each val, key in item
-                    if key !== '_id' && key !== 'url'
-                        if typeof(val) === 'object'
-                            span #[strong #{key}:] #[a(href=val.url)=val.name]       
-                        else
-                            span #[strong #{key}:] #{val}   
+        +itemDetail(title, item)
         div.detail-buttons
             a(href=`${item.url}/update`)
                 button
                     span.icon-container 
                         +editIcon(48, 48) 
                     span Edit
-            a(href="#")
+            a(href=`${item.url}/delete`)
                 button
                     span.icon-container 
                         +deleteIcon(48, 48)

@@ -1,0 +1,10 @@
+mixin itemDetail(title, item)
+    div.detail-fields-container
+            h2 #{title}: #{item._id}
+            div.detail-fields
+                each val, key in item
+                    if key !== '_id' && key !== 'url'
+                        if typeof(val) === 'object'
+                            span #[strong #{key}:] #[a(href=val.url)=val.name]       
+                        else
+                            span #[strong #{key}:] #{val}   
