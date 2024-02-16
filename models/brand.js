@@ -17,5 +17,9 @@ BrandSchema.virtual('foundation_date_formatted').get(function () {
     );
 });
 
+BrandSchema.virtual('foundation_date_yyyy_mm_dd').get(function () {
+    return DateTime.fromJSDate(this.foundation_date).toISODate();
+});
+
 const Brand = mongoose.model('Brand', BrandSchema);
 module.exports = Brand;

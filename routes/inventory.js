@@ -27,6 +27,11 @@ router.get('/category/:id', categoryController.categoryDetail);
 
 router.get('/brands', brandController.list);
 
+router
+    .route('/brand/create')
+    .get(brandController.brandCreateGet)
+    .post(brandController.brandCreatePost);
+
 router.get('/brand/:id', brandController.brandDetail);
 
 module.exports = router;

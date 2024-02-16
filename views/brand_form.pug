@@ -1,0 +1,16 @@
+extends layout 
+
+block content 
+    include error_span_mixin
+    form(action="/inventory/brand/create" method="POST")
+        h1 New brand
+        fieldset 
+            div(class=(locals.errors && errors.name ? 'form-field-container error' : 'form-field-container'))
+                input.form-field(type="text" placeholder="Name" name="name" value=(brand===undefined ? '' : brand.name) required)
+            if locals.errors && errors.name
+                +errorSpan(errors.name)
+            div(class=(locals.errors && errors.foundation ? 'form-field-container error' : 'form-field-container'))
+                input.form-field(type="date" placeholder="Foundation date" name="foundation-date" value=(brand===undefined ? '' : brand.foundation_date_yyyy_mm_dd))
+            if locals.errors && errors.description
+                +errorSpan(errors.description)
+        button Add
