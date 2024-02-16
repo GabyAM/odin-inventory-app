@@ -203,7 +203,11 @@ exports.itemDeleteGet = asyncHandler(async (req, res, next) => {
     const item = await Item.findById(req.params.id)
         .populate('brand category')
         .exec();
-    console.log(item);
+
+    if (item === null) {
+        res.redirect('/inventory/items');
+    }
+
     res.render('delete', {
         type: 'Item',
         item: itemMappers.mapItemToDisplay(item)

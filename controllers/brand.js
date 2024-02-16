@@ -136,6 +136,11 @@ exports.brandUpdatePost = [
 
 exports.brandDeleteGet = asyncHandler(async (req, res, next) => {
     const brand = await Brand.findById(req.params.id);
+
+    if (brand === null) {
+        res.redirect('/inventory/brands');
+    }
+
     res.render('delete', {
         type: 'Brand',
         item: brandMappers.mapBrandToDisplay(brand)

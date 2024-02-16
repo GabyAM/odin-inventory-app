@@ -142,6 +142,10 @@ exports.categoryUpdatePost = [
 
 exports.categoryDeleteGet = asyncHandler(async (req, res, next) => {
     const category = await Category.findById(req.params.id);
+
+    if (category === null) {
+        res.redirect('/inventory/categories');
+    }
     res.render('delete', {
         type: 'Category',
         item: categoryMappers.mapCategoryToDisplay(category)
