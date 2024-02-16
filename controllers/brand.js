@@ -10,13 +10,12 @@ exports.list = asyncHandler(async (req, res, next) => {
         .sort({ name: 1 })
         .exec();
 
-    const brandsArray = brands.map((brand) => {
-        return {
-            _id: brand.id,
-            name: brand.name,
-            foundation_date_formatted: brand.foundation_date_formatted
-        };
-    });
+    const brandsArray = brands.map((brand) => ({
+        _id: brand.id,
+        url: brand.url,
+        name: brand.name,
+        foundation_date_formatted: brand.foundation_date_formatted
+    }));
 
     res.render('list', {
         title: 'All brands',
@@ -39,6 +38,7 @@ exports.brandDetail = asyncHandler(async (req, res, next) => {
 
     const mappedBrand = {
         _id: brand._id,
+        url: brand.url,
         Name: brand.name,
         'Foundation date': brand.foundation_date_formatted
     };
@@ -84,6 +84,44 @@ exports.brandCreatePost = [
                 await brand.save();
                 res.redirect(brand.url);
             }
+        }
+    })
+];
+
+exports.brandUpdateGet = asyncHandler(async (req, res, next) => {
+    const brand = await Brand.findById(req.params.id).exec();
+    res.render('brand_form', {
+        title: 'Update brand',
+        brand
+    });
+});
+
+exports.brandUpdatePost = [
+    body('name', 'name must not be empty').trim().notEmpty().escape(),
+    body('foundation-date').optional({ values: 'falsy' }).isISO8601().toDate(),
+
+    asyncHandler(async (req, res, next) => {
+        const errors = validationResult(req);
+
+        const brand = new Brand({
+            name: req.body.name,
+            foundation_date: req.body['foundation-date'],
+            _id: req.params.id
+        });
+
+        if (!errors.isEmpty()) {
+            res.render('brand_form', {
+                title: 'Update brand',
+                brand,
+                errors: mapErrors(errors)
+            });
+        } else {
+            const updatedBrand = await Brand.findByIdAndUpdate(
+                req.params.id,
+                brand,
+                {}
+            );
+            res.redirect(updatedBrand.url);
         }
     })
 ];

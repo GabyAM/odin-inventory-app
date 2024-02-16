@@ -42,6 +42,11 @@ router
     .get(brandController.brandCreateGet)
     .post(brandController.brandCreatePost);
 
+router
+    .route('/brand/:id/update')
+    .get(brandController.brandUpdateGet)
+    .post(brandController.brandUpdatePost);
+
 router.get('/brand/:id', brandController.brandDetail);
 
 module.exports = router;
