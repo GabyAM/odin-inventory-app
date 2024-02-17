@@ -297,16 +297,6 @@ textarea.form-field {
     color: black;
 }
 
-form button {
-    background-color: var(--medium-gray);
-    border: none;
-    color: var(--accent-color);
-    padding: 0.5em 1.5em;
-    max-width: 200px;
-    font-size: 32px;
-    font-weight: 700;
-}
-
 .delete-warning-content {
     width: 100%;
     max-width: 400px;
@@ -335,11 +325,23 @@ form button {
     font-size: 12px;
 }
 
+form button {
+    background-color: var(--accent-color);
+    border: none;
+    color: var(--dark-gray);
+    max-width: 200px;
+    font-size: 16px;
+    font-weight: 700;
+    border-radius: 3px;
+}
+
+form > button {
+    width: 100%;
+    padding: 0.5rem 0;
+}
+
 .delete-warning-content button {
     background-color: red;
     color: white;
-    border-radius: 3px;
-    display: flex;
-    align-items: center;
-    font-size: 16px;
+}
 }
