@@ -160,20 +160,35 @@ exports.categoryDeleteGet = asyncHandler(async (req, res, next) => {
     });
 });
 
-exports.categoryDeletePost = asyncHandler(async (req, res, next) => {
-    const [category, categoryItems] = await Promise.all([
-        Category.findById(req.params.id).exec(),
-        Item.find({ category: req.params.id }).sort({ name: 1 }).exec()
-    ]);
+exports.categoryDeletePost = [
+    body('password')
+        .notEmpty()
+        .withMessage('Please insert a password')
+        .equals('1234')
+        .withMessage('The password is incorrect'),
+    asyncHandler(async (req, res, next) => {
+        const errors = validationResult(req);
 
-    if (categoryItems.length > 0) {
-        res.render('delete', {
-            type: 'Category',
-            item: categoryMappers.mapCategoryToDisplay(category),
-            items: categoryItems
-        });
-    } else {
-        await Category.findByIdAndDelete(req.params.id);
-        res.redirect('/inventory/categories');
-    }
-});
+        const [category, categoryItems] = await Promise.all([
+            Category.findById(req.params.id).exec(),
+            Item.find({ category: req.params.id }).sort({ name: 1 }).exec()
+        ]);
+
+        if (categoryItems.length > 0) {
+            res.render('delete', {
+                type: 'Category',
+                item: categoryMappers.mapCategoryToDisplay(category),
+                items: categoryItems
+            });
+        } else if (!errors.isEmpty()) {
+            res.render('delete', {
+                type: 'Category',
+                item: categoryMappers.mapCategoryToDisplay(category),
+                errors: mapErrors(errors)
+            });
+        } else {
+            await Category.findByIdAndDelete(req.params.id);
+            res.redirect('/inventory/categories');
+        }
+    })
+];

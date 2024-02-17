@@ -226,7 +226,23 @@ exports.itemDeleteGet = asyncHandler(async (req, res, next) => {
     });
 });
 
-exports.itemDeletePost = asyncHandler(async (req, res, next) => {
-    await Item.findByIdAndDelete(req.params.id);
-    res.redirect('/inventory/items');
-});
+exports.itemDeletePost = [
+    body('password')
+        .notEmpty()
+        .withMessage('Please insert a password')
+        .equals('1234')
+        .withMessage('The password is incorrect'),
+    asyncHandler(async (req, res, next) => {
+        const errors = validationResult(req);
+        if (!errors.isEmpty()) {
+            const item = await Item.findById(req.params.id);
+            res.render('delete', {
+                type: 'Item',
+                item: itemMappers.mapItemToDisplay(item),
+                errors: mapErrors(errors)
+            });
+        }
+        await Item.findByIdAndDelete(req.params.id);
+        res.redirect('/inventory/items');
+    })
+];

@@ -12,11 +12,11 @@ block content
             +itemDetail(type, item)
             if!locals.items
                 form(method="POST")
-                    include icons
-                    button
-                        span.icon-container 
-                            +deleteIcon(16,16)
-                        span Delete
+                    include password_input_mixin
+                    if locals.errors && errors.password
+                        +passwordInput("Delete", errors.password[0])
+                    else 
+                        +passwordInput("Delete", "")
         if locals.items
             div
                 span You need to delete the following items in order to delete this #{type.toLowerCase()}
@@ -24,6 +24,3 @@ block content
                     each item in items 
                         a(href=item.url)
                             li=item.name
-
-
-

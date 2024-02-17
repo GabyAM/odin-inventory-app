@@ -158,20 +158,35 @@ exports.brandDeleteGet = asyncHandler(async (req, res, next) => {
     });
 });
 
-exports.brandDeletePost = asyncHandler(async (req, res, next) => {
-    const [brand, brandItems] = await Promise.all([
-        Brand.findById(req.params.id).exec(),
-        Item.find({ brand: req.params.id }).sort({ name: 1 }).exec()
-    ]);
+exports.brandDeletePost = [
+    body('password')
+        .notEmpty()
+        .withMessage('Please insert a password')
+        .equals('1234')
+        .withMessage('The password is incorrect'),
+    asyncHandler(async (req, res, next) => {
+        const errors = validationResult(req);
 
-    if (brandItems.length > 0) {
-        res.render('delete', {
-            type: 'Brand',
-            item: brandMappers.mapBrandToDisplay(brand),
-            items: brandItems
-        });
-    } else {
-        await Brand.findByIdAndDelete(req.params.id);
-        res.redirect('/inventory/brands');
-    }
-});
+        const [brand, brandItems] = await Promise.all([
+            Brand.findById(req.params.id).exec(),
+            Item.find({ brand: req.params.id }).sort({ name: 1 }).exec()
+        ]);
+
+        if (brandItems.length > 0) {
+            res.render('delete', {
+                type: 'Brand',
+                item: brandMappers.mapBrandToDisplay(brand),
+                items: brandItems
+            });
+        } else if (!errors.isEmpty()) {
+            res.render('delete', {
+                type: 'Brand',
+                item: brandMappers.mapBrandToDisplay(brand),
+                errors: mapErrors(errors)
+            });
+        } else {
+            await Brand.findByIdAndDelete(req.params.id);
+            res.redirect('/inventory/brands');
+        }
+    })
+];
