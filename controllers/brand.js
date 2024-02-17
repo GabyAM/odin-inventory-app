@@ -95,7 +95,7 @@ exports.brandUpdatePost = [
     body('password')
         .notEmpty()
         .withMessage('Please insert a password')
-        .equals('1234')
+        .equals(process.env.SECRET_PASSWORD)
         .withMessage('The password is incorrect')
         .escape(),
 
@@ -163,7 +163,7 @@ exports.brandDeletePost = [
     body('password')
         .notEmpty()
         .withMessage('Please insert a password')
-        .equals('1234')
+        .equals(process.env.SECRET_PASSWORD)
         .withMessage('The password is incorrect')
         .escape(),
     asyncHandler(async (req, res, next) => {
