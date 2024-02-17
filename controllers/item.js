@@ -91,8 +91,6 @@ exports.itemCreatePost = [
             number_in_stock: req.body['number-in-stock']
         });
 
-        console.log(item);
-
         if (!errors.isEmpty()) {
             const [categories, brands] = await Promise.all([
                 Category.find({}, 'name').sort({ name: 1 }).exec(),
@@ -192,7 +190,6 @@ exports.itemUpdatePost = [
             );
             selectedCategory.selected = 'true';
 
-            console.log(mapErrors(errors));
             res.render('item_form', {
                 title: 'Update item',
                 action: 'Update',

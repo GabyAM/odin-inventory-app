@@ -13,8 +13,6 @@ exports.list = asyncHandler(async (req, res, next) => {
         categoryMappers.mapCategory(category)
     );
 
-    console.log(categoriesArray);
-
     res.render('list', {
         title: 'All categories',
         type: 'category',
