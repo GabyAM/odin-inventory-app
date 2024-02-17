@@ -96,7 +96,8 @@ exports.brandUpdatePost = [
         .notEmpty()
         .withMessage('Please insert a password')
         .equals('1234')
-        .withMessage('The password is incorrect'),
+        .withMessage('The password is incorrect')
+        .escape(),
 
     asyncHandler(async (req, res, next) => {
         const errors = validationResult(req);
@@ -163,7 +164,8 @@ exports.brandDeletePost = [
         .notEmpty()
         .withMessage('Please insert a password')
         .equals('1234')
-        .withMessage('The password is incorrect'),
+        .withMessage('The password is incorrect')
+        .escape(),
     asyncHandler(async (req, res, next) => {
         const errors = validationResult(req);
 
