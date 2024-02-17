@@ -4,7 +4,7 @@ const Item = require('../models/item');
 const Brand = require('../models/brand');
 const itemMappers = require('../mappers/item');
 const { body, validationResult } = require('express-validator');
-const { mapErrors } = require('../mappers/error');
+const mapErrors = require('../mappers/error');
 
 exports.index = asyncHandler(async (req, res, next) => {
     const [numCategories, numItems, numBrands] = await Promise.all([
@@ -58,6 +58,8 @@ exports.itemCreateGet = asyncHandler(async (req, res, next) => {
     ]);
 
     res.render('item_form', {
+        title: 'New item',
+        action: 'Add',
         categories,
         brands
     });
@@ -134,6 +136,8 @@ exports.itemUpdateGet = asyncHandler(async (req, res, next) => {
     selectedCategory.selected = 'true';
 
     res.render('item_form', {
+        title: 'Update item',
+        action: 'Update',
         item,
         brands,
         categories
@@ -154,6 +158,11 @@ exports.itemUpdatePost = [
         .withMessage('Number in stock must not be required')
         .isNumeric()
         .withMessage('Number in stock must be numeric'),
+    body('password')
+        .notEmpty()
+        .withMessage('Please insert a password')
+        .equals('1234')
+        .withMessage('The password is incorrect'),
 
     asyncHandler(async (req, res, next) => {
         const errors = validationResult(req);
@@ -182,7 +191,10 @@ exports.itemUpdatePost = [
             );
             selectedCategory.selected = 'true';
 
+            console.log(mapErrors(errors));
             res.render('item_form', {
+                title: 'Update item',
+                action: 'Update',
                 categories,
                 brands,
                 errors: mapErrors(errors),

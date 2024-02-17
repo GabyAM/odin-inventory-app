@@ -1,4 +1,4 @@
-exports.mapErrors = function (errors) {
+const mapErrors = function (errors) {
     const mappedErrors = {};
     errors.array().forEach((error) => {
         if (!mappedErrors[error.path]) {
@@ -9,3 +9,5 @@ exports.mapErrors = function (errors) {
     });
     return mappedErrors;
 };
+
+module.exports = mapErrors;

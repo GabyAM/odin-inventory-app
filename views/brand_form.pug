@@ -13,4 +13,11 @@ block content
                 input.form-field(type="date" placeholder="Foundation date" name="foundation-date" value=(brand===undefined ? '' : brand.foundation_date_yyyy_mm_dd))
             if locals.errors && errors.description
                 +errorSpan(errors.description)
-        button Add
+        if action === 'Update'
+            include password_input_mixin
+            if locals.errors && errors.password
+                +passwordInput(action, errors.password[0])
+            else 
+                +passwordInput(action, "")
+        else
+            button=action

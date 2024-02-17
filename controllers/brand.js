@@ -40,7 +40,10 @@ exports.brandDetail = asyncHandler(async (req, res, next) => {
 });
 
 exports.brandCreateGet = (req, res, next) => {
-    res.render('brand_form');
+    res.render('brand_form', {
+        title: 'New brand',
+        action: 'Add'
+    });
 };
 
 exports.brandCreatePost = [
@@ -81,6 +84,7 @@ exports.brandUpdateGet = asyncHandler(async (req, res, next) => {
     const brand = await Brand.findById(req.params.id).exec();
     res.render('brand_form', {
         title: 'Update brand',
+        action: 'Update',
         brand
     });
 });
@@ -88,6 +92,11 @@ exports.brandUpdateGet = asyncHandler(async (req, res, next) => {
 exports.brandUpdatePost = [
     body('name', 'name must not be empty').trim().notEmpty().escape(),
     body('foundation-date').optional({ values: 'falsy' }).isISO8601().toDate(),
+    body('password')
+        .notEmpty()
+        .withMessage('Please insert a password')
+        .equals('1234')
+        .withMessage('The password is incorrect'),
 
     asyncHandler(async (req, res, next) => {
         const errors = validationResult(req);
@@ -101,6 +110,7 @@ exports.brandUpdatePost = [
         if (!errors.isEmpty()) {
             res.render('brand_form', {
                 title: 'Update brand',
+                action: 'Update',
                 brand,
                 errors: mapErrors(errors)
             });
@@ -115,6 +125,7 @@ exports.brandUpdatePost = [
             if (brandExists) {
                 res.render('brand_form', {
                     title: 'Update brand',
+                    action: 'Update',
                     brand,
                     errors: {
                         name: [

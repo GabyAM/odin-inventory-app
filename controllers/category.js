@@ -4,7 +4,7 @@ const Item = require('../models/item');
 const categoryMappers = require('../mappers/category');
 const itemMappers = require('../mappers/item');
 const { body, validationResult } = require('express-validator');
-const { mapErrors } = require('../mappers/error');
+const mapErrors = require('../mappers/error');
 
 exports.list = asyncHandler(async (req, res, next) => {
     const categories = await Category.find({}).sort({ name: 1 }).exec();
@@ -47,7 +47,8 @@ exports.categoryDetail = asyncHandler(async (req, res, next) => {
 
 exports.categoryCreateGet = (req, res, next) => {
     res.render('category_form', {
-        title: 'New category'
+        title: 'New category',
+        action: 'Add'
     });
 };
 
@@ -89,11 +90,17 @@ exports.categoryUpdateGet = asyncHandler(async (req, res, next) => {
     const category = await Category.findById(req.params.id).exec();
     res.render('category_form', {
         title: 'Update category',
+        action: 'Update',
         category
     });
 });
 exports.categoryUpdatePost = [
     body('name', 'name must not be empty').trim().notEmpty().escape(),
+    body('password')
+        .notEmpty()
+        .withMessage('Please insert a password')
+        .equals('1234')
+        .withMessage('The password is incorrect'),
 
     asyncHandler(async (req, res, next) => {
         const errors = validationResult(req);
@@ -107,6 +114,7 @@ exports.categoryUpdatePost = [
         if (!errors.isEmpty()) {
             res.render('category_form', {
                 title: 'Update category',
+                action: 'Update',
                 category,
                 errors: mapErrors(errors)
             });

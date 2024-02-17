@@ -13,4 +13,11 @@ block content
                 textarea.form-field(placeholder="Description" rows="4" name="description")= category===undefined ? '' : category.description 
             if locals.errors && errors.description
                 +errorSpan(errors.description)
-        button Add
+        if action === 'Update'
+            include password_input_mixin
+            if locals.errors && errors.password
+                +passwordInput(action, errors.password[0])
+            else 
+                +passwordInput(action, "")
+        else
+            button=action

@@ -3,7 +3,7 @@ extends layout
 block content 
     include error_span_mixin
     form(method="POST")
-        h1 New item
+        h1=title
         fieldset 
             div(class=(locals.errors && errors.name ? 'form-field-container error' : 'form-field-container'))
                 input.form-field(type="text" placeholder="Name" name="name" value=(item===undefined ? '' : item.name) required)
@@ -46,5 +46,12 @@ block content
                 input.form-field(type="number" placeholder="Number in stock" required name="number-in-stock" value=(item===undefined ? '' : item.number_in_stock))
             if locals.errors && errors['number-in-stock']
                 +errorSpan(errors['number-in-stock'])
-        button Add
+        if action === 'Update'
+            include password_input_mixin
+            if locals.errors && errors.password
+                +passwordInput(action, errors.password[0])
+            else 
+                +passwordInput(action, "")
+        else
+            button=action
 
