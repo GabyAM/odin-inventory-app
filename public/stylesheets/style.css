@@ -344,4 +344,17 @@ form > button {
     background-color: red;
     color: white;
 }
+
+.password-submit {
+    width: 100%;
+    display: grid;
+    grid-template-columns: 2.5fr 1fr;
+    grid-template-rows: auto 20px;
+    column-gap: 0.8rem;
+}
+.password-submit input {
+    padding: 0.5rem;
+}
+.password-submit button {
+    padding: 0.5rem 0;
 }
